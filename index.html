@@ -9,8 +9,17 @@
     <script>
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const today = new Date();
+        const current_month = today.getMonth();
+        const current_year = today.getFullYear();
         document.write(months[today.getMonth()]);
         document.write(today.getFullYear());
+
+        function daysInMonth(month, year) { // 1 - January
+            return new Date(year, month + 1, 0).getDate();
+        }
+        
+        document.write(daysInMonth(current_month, current_year))
     </script>
+
 </body>
 </html>
