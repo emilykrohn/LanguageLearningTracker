@@ -17,8 +17,12 @@
         function daysInMonth(month, year) { // 1 - January
             return new Date(year, month + 1, 0).getDate();
         }
-        
-        document.write(daysInMonth(current_month, current_year))
+        daysInCurrentMonth = daysInMonth(current_month, current_year, 0);
+
+        for (var i = 1; i <= daysInCurrentMonth; i++) {
+            document.write('<p id="dayNumber">' + i + '</p>');
+        }
+
     </script>
 
 </body>
