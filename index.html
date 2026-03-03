@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <script>
@@ -19,8 +20,12 @@
         }
         daysInCurrentMonth = daysInMonth(current_month, current_year, 0);
 
+        document.write('<br>');
         for (var i = 1; i <= daysInCurrentMonth; i++) {
             document.write('<p id="dayNumber">' + i + '</p>');
+            if (i % 7 == 0) {
+                document.write('<br>');
+            }
         }
 
     </script>
