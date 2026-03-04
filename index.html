@@ -19,15 +19,24 @@
             return new Date(year, month + 1, 0).getDate();
         }
         daysInCurrentMonth = daysInMonth(current_month, current_year, 0);
+        firstWeekDay = new Date(current_year, 3, 1).getDay();
+        document.write(firstWeekDay);
 
         document.write('<br>');
+
+        var newLineCount = 0;
+        for (var i = 0; i < firstWeekDay; i++) {
+            document.write('<p id="emptyDay">&nbsp</p>');
+            newLineCount++;
+        }
         for (var i = 1; i <= daysInCurrentMonth; i++) {
             if (i > 9) {
                 document.write('<p id="dayDoubleDigit">' + i + '</p>');
             } else {
                 document.write('<p id="daySingleDigit">' + i + '</p>');
             }
-            if (i % 7 == 0) {
+            newLineCount++;
+            if (newLineCount % 7 == 0) {
                 document.write('<br>');
             }
         }
