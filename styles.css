@@ -1,4 +1,9 @@
-#dayNumber {
+#daySingleDigit {
     margin: 25px 25px 25px 25px;
-    display: inline
+    display: inline;
+}
+
+#dayDoubleDigit {
+    margin: 25px 21px 25px 21px;
+    display: inline;
 }

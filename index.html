@@ -22,7 +22,11 @@
 
         document.write('<br>');
         for (var i = 1; i <= daysInCurrentMonth; i++) {
-            document.write('<p id="dayNumber">' + i + '</p>');
+            if (i > 9) {
+                document.write('<p id="dayDoubleDigit">' + i + '</p>');
+            } else {
+                document.write('<p id="daySingleDigit">' + i + '</p>');
+            }
             if (i % 7 == 0) {
                 document.write('<br>');
             }
