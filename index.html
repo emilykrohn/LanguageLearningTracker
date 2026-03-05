@@ -26,14 +26,20 @@
 
         var newLineCount = 0;
         for (var i = 0; i < firstWeekDay; i++) {
+            document.write('<div class="squares">');
             document.write('<p id="emptyDay">&nbsp</p>');
+            document.write('</div>');
             newLineCount++;
         }
         for (var i = 1; i <= daysInCurrentMonth; i++) {
             if (i > 9) {
+                document.write('<div class="squares">');
                 document.write('<p id="dayDoubleDigit">' + i + '</p>');
+                document.write('</div>');
             } else {
+                document.write('<div class="squares">');
                 document.write('<p id="daySingleDigit">' + i + '</p>');
+                document.write('</div>');
             }
             newLineCount++;
             if (newLineCount % 7 == 0) {
