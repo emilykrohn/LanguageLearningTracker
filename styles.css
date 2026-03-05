@@ -17,5 +17,6 @@
     height: 50px;
     width: 50px;
     background-color: antiquewhite;
-    display: inline;
+    display: inline-block;
+    border-style: solid;
 }
