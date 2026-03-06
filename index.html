@@ -22,6 +22,11 @@
         firstWeekDay = new Date(current_year, 3, 1).getDay();
 
         document.write('<br>');
+        const weekDays = ["Su", "M", "Tu", "W", "Th", "F", "Sa"]
+        for (var i = 0; i < weekDays.length; i++) {
+            document.write('<p id="weekDay">' + weekDays[i] + '</p>');
+        }
+        document.write('<br>');
 
         var newLineCount = 0;
         for (var i = 0; i < firstWeekDay; i++) {

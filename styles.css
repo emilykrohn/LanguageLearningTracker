@@ -13,6 +13,11 @@
     display: inline;
 }
 
+#weekDay {
+    margin: 15px 19px 15px 19px;
+    display: inline;
+}
+
 .squares {
     height: 50px;
     width: 50px;
