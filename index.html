@@ -19,7 +19,7 @@
             return new Date(year, month + 1, 0).getDate();
         }
         daysInCurrentMonth = daysInMonth(current_month, current_year, 0);
-        firstWeekDay = new Date(current_year, 3, 1).getDay();
+        firstWeekDay = new Date(current_year, current_month, 1).getDay();
 
         document.write('<br>');
         const weekDays = ["Su", "M", "Tu", "W", "Th", "F", "Sa"]
@@ -36,15 +36,20 @@
             newLineCount++;
         }
         for (var i = 1; i <= daysInCurrentMonth; i++) {
-            if (i > 9) {
+            if (i != today.getDate()) {
                 document.write('<div class="squares">');
-                document.write('<p id="dayDoubleDigit">' + i + '</p>');
-                document.write('</div>');
             } else {
-                document.write('<div class="squares">');
-                document.write('<p id="daySingleDigit">' + i + '</p>');
-                document.write('</div>');
+                document.write('<div class="currentDay">');
             }
+
+            if (i > 9) {
+                document.write('<p id="dayDoubleDigit">' + i + '</p>');
+            } else {
+                document.write('<p id="daySingleDigit">' + i + '</p>');
+            }
+
+            document.write('</div>');
+
             newLineCount++;
             if (newLineCount % 7 == 0) {
                 document.write('<br>');
