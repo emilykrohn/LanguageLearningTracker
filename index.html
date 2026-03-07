@@ -56,6 +56,14 @@
             }
         }
 
+        const dates = document.getElementsByClassName("squares");
+
+        for (var i = 0; i < dates.length; i++) {
+            dates[i].addEventListener("click", () => {
+                console.log("click event");
+            });
+        }
+
     </script>
 
 </body>
