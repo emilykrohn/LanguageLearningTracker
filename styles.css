@@ -18,6 +18,10 @@
     display: inline;
 }
 
+#form {
+    display: none;
+}
+
 .squares {
     height: 50px;
     width: 50px;

@@ -55,16 +55,30 @@
                 document.write('<br>');
             }
         }
+    </script>
 
+    <div id="form">
+        <form>
+            <label for="hours">Hours: </label><br>
+            <input type="text" id="hours" name="hours"><br>
+            <button type="button" class="cancelButton" onclick="closeForm()">Close</button>
+        </form>
+    </div>
+
+    <script>
         const dates = document.getElementsByClassName("squares");
 
         for (var i = 0; i < dates.length; i++) {
             dates[i].addEventListener("click", () => {
-                console.log("click event");
+                document.getElementById("form").style.display = "block";
             });
         }
 
+        function closeForm() {
+            document.getElementById("form").style.display = "none";
+        }
     </script>
+
 
 </body>
 </html>
