@@ -63,14 +63,19 @@
 
         const dates = document.getElementsByClassName("squares");
 
+        var current_day = 0;
+
         for (var i = 0; i < dates.length; i++) {
             dates[i].addEventListener("click", (date) => {
-                console.log("Pressed " + date.target.id);
+                current_day = date.target.id;
                 document.getElementById("form").style.display = "block";
             });
         }
 
         function closeForm() {
+            var hoursInput = document.getElementById("hours");
+            localStorage.setItem(current_year + "-" + current_month + "-" + current_day, hoursInput.value);
+            console.log(localStorage.getItem(current_year + "-" + current_month + "-" + current_day));
             document.getElementById("form").style.display = "none";
         }
     </script>
