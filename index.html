@@ -36,15 +36,20 @@
             newLineCount++;
         }
         for (var i = 1; i <= daysInCurrentMonth; i++) {
-            if (i != today.getDate()) {
-                document.write('<div class="squares">');
-            } else {
-                document.write('<div class="currentDay">');
-            }
 
             if (i > 9) {
+                if (i != today.getDate()) {
+                    document.write('<div id=' + String(i) + ' class="squares">');
+                } else {
+                    document.write('<div id=' + String(i) + ' class="currentDay">');
+                }
                 document.write('<p id="dayDoubleDigit">' + i + '</p>');
             } else {
+                if (i != today.getDate()) {
+                    document.write('<div id=' + String(i) + ' class="squares">');
+                } else {
+                    document.write('<div id=' + String(i) + ' class="currentDay">');
+                }
                 document.write('<p id="daySingleDigit">' + i + '</p>');
             }
 
@@ -55,21 +60,12 @@
                 document.write('<br>');
             }
         }
-    </script>
 
-    <div id="form">
-        <form>
-            <label for="hours">Hours: </label><br>
-            <input type="text" id="hours" name="hours"><br>
-            <button type="button" class="cancelButton" onclick="closeForm()">Close</button>
-        </form>
-    </div>
-
-    <script>
         const dates = document.getElementsByClassName("squares");
 
         for (var i = 0; i < dates.length; i++) {
-            dates[i].addEventListener("click", () => {
+            dates[i].addEventListener("click", (date) => {
+                console.log("Pressed " + date.target.id);
                 document.getElementById("form").style.display = "block";
             });
         }
@@ -79,6 +75,13 @@
         }
     </script>
 
+    <div id="form">
+        <form>
+            <label for="hours">Hours: </label><br>
+            <input type="text" id="hours" name="hours"><br>
+            <button type="button" class="cancelButton" onclick="closeForm()">Close</button>
+        </form>
+    </div>
 
 </body>
 </html>
