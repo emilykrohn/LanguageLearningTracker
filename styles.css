@@ -1,21 +1,28 @@
 #daySingleDigit {
-    margin: 25px 25px 25px 25px;
+    margin: 5px;
     display: inline;
+    text-align: end;
 }
 
 #dayDoubleDigit {
-    margin: 25px 21px 25px 21px;
+    margin: 5px;
     display: inline;
 }
 
 #emptyDay {
-    margin: 25px 25px 25px 25px;
+    margin: 5px;
     display: inline;
 }
 
 #weekDay {
-    margin: 15px 19px 15px 19px;
-    display: inline;
+    width: 85px;
+    margin: 0 auto;
+    display: inline-block;
+    text-align: center;
+}
+
+#monthAndYear {
+    text-align: center;
 }
 
 #form {

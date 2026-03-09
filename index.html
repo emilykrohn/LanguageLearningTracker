@@ -13,8 +13,7 @@
         const today = new Date();
         const current_month = today.getMonth();
         const current_year = today.getFullYear();
-        document.write(months[today.getMonth()]);
-        document.write(today.getFullYear());
+        document.write('<p id=monthAndYear>' + months[today.getMonth()] + ' ' + today.getFullYear() + '<\p>');
 
         function daysInMonth(month, year) { // 1 - January
             return new Date(year, month + 1, 0).getDate();
@@ -22,7 +21,6 @@
         daysInCurrentMonth = daysInMonth(current_month, current_year, 0);
         firstWeekDay = new Date(current_year, current_month, 1).getDay();
 
-        document.write('<br>');
         const weekDays = ["Su", "M", "Tu", "W", "Th", "F", "Sa"]
         for (var i = 0; i < weekDays.length; i++) {
             document.write('<p id="weekDay">' + weekDays[i] + '</p>');
