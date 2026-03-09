@@ -20,19 +20,26 @@
 
 #form {
     display: none;
+    width: fit-content;
+    margin: auto;
+}
+
+#calendar {
+    width: fit-content;
+    margin: auto;
 }
 
 .squares {
-    height: 50px;
-    width: 50px;
+    height: 80px;
+    width: 80px;
     background-color: antiquewhite;
     display: inline-block;
     border-style: solid;
 }
 
 .currentDay {
-    height: 50px;
-    width: 50px;
+    height: 80px;
+    width: 80px;
     background-color: cornflowerblue;
     display: inline-block;
     border-style: solid;
