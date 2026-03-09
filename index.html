@@ -69,13 +69,18 @@
             dates[i].addEventListener("click", (date) => {
                 current_day = date.target.id;
                 document.getElementById("form").style.display = "block";
+                var hours = localStorage.getItem(current_year + "-" + current_month + "-" + current_day);
+                if (hours == null) {
+                    hours = 0;
+                }
+                document.getElementById("hoursRecorded").innerHTML = "<p>Hour(s) Recorded: " + hours + "<\p>";
             });
         }
 
         function closeForm() {
             var hoursInput = document.getElementById("hours");
             localStorage.setItem(current_year + "-" + current_month + "-" + current_day, hoursInput.value);
-            console.log(localStorage.getItem(current_year + "-" + current_month + "-" + current_day));
+
             document.getElementById("form").style.display = "none";
         }
     </script>
@@ -86,6 +91,7 @@
             <input type="text" id="hours" name="hours"><br>
             <button type="button" class="cancelButton" onclick="closeForm()">Close</button>
         </form>
+        <p id="hoursRecorded">Hours Recorded: </p>
     </div>
 
 </body>
