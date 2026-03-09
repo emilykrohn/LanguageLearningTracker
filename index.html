@@ -41,14 +41,14 @@
                 if (i != today.getDate()) {
                     document.write('<div id=' + String(i) + ' class="squares">');
                 } else {
-                    document.write('<div id=' + String(i) + ' class="currentDay">');
+                    document.write('<div id=' + String(i) + ' class="squares currentDay">');
                 }
                 document.write('<p id="dayDoubleDigit">' + i + '</p>');
             } else {
                 if (i != today.getDate()) {
                     document.write('<div id=' + String(i) + ' class="squares">');
                 } else {
-                    document.write('<div id=' + String(i) + ' class="currentDay">');
+                    document.write('<div id=' + String(i) + ' class="squares currentDay">');
                 }
                 document.write('<p id="daySingleDigit">' + i + '</p>');
             }
