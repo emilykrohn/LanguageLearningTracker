@@ -21,6 +21,10 @@
     text-align: center;
 }
 
+.day {
+    display: inline;
+}
+
 #monthAndYear {
     text-align: center;
 }
