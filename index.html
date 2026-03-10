@@ -10,6 +10,7 @@
     <div id="calendar">
         <p id="monthAndYear">Month Year</p>
         <input type="button" value="Previous" onclick="previousMonth();">
+        <input type="button" value="Next" onclick="nextMonth();">
         <br>
         <p id="weekDay"> Su </p>
         <p id="weekDay"> M </p>
@@ -140,6 +141,7 @@
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const today = new Date();
         current_month = today.getMonth();
+        console.log(current_month)
         current_year = today.getFullYear();
 
         updateCalendar();
@@ -158,10 +160,8 @@
                 if (i >= firstWeekDay && i < daysInCurrentMonth + firstWeekDay) {
                     day_counter += 1;
                     document.getElementById(String(i)).innerHTML = String(day_counter);
-                    console.log("first: " + i);
                 } else {
                     document.getElementById(String(i)).innerHTML = '&nbsp;';
-                    console.log("second: " + i)
                 }
             }
 
@@ -188,6 +188,16 @@
             } else {
                 current_month = 11;
                 current_year -= 1;
+            }
+            updateCalendar();
+        }
+
+        function nextMonth() {
+            if (current_month <= 10) {
+                current_month += 1;
+            } else {
+                current_month = 0;
+                current_year += 1;
             }
             updateCalendar();
         }
