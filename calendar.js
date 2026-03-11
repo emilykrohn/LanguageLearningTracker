@@ -2,9 +2,11 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 const today = new Date();
 
 current_month = today.getMonth();
-console.log(current_month)
 current_year = today.getFullYear()
-updateCalendar()
+current_day = today.getDay();
+updateCalendar();
+
+var current_day_edited = 0;
 
 function updateCalendar() {
     document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
@@ -23,13 +25,14 @@ function updateCalendar() {
             document.getElementById(String(i)).innerHTML = '&nbsp;';
         }
     }
-    const dates = document.getElementsByClassName("squares")
-    var current_day = 0
+    const dates = document.getElementsByClassName("squares");
+    var current_day = 0;
     for (var i = 0; i < dates.length; i++) {
         dates[i].addEventListener("click", (date) => {
             current_day = date.target.id;
+            current_day_edited = current_day;
             document.getElementById("form").style.display = "block";
-            var hours = localStorage.getItem(current_year + "-" + current_month + "-" + current_day);
+            var hours = localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day);
             if (hours == null) {
                 hours = 0;
             }
@@ -60,6 +63,6 @@ function nextMonth() {
 
 function closeForm() {
     var hoursInput = document.getElementById("hours");
-    localStorage.setItem(current_year + "-" + current_month + "-" + current_day, hoursInput.value)
+    localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, hoursInput.value)
     document.getElementById("form").style.display = "none";
 }
