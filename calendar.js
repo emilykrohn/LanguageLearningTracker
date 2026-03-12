@@ -33,11 +33,13 @@ function updateCalendar() {
             current_day_edited = current_day;
             document.getElementById("form").style.display = "block";
             document.getElementById("formDate").innerHTML = "Date: " + String(current_month + 1) + "-" + String(current_day) + "-" + String(current_year);
-            var hours = localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day);
-            if (hours == null) {
-                hours = 0;
+
+            if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
+                var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
+                document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
+            } else {
+                document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes<\p>";
             }
-            document.getElementById("hoursRecorded").innerHTML = "<p>Hour(s) Recorded: " + hours + "<\p>";
         });
     }
 }
@@ -62,8 +64,33 @@ function nextMonth() {
     updateCalendar();
 }
 
+function saveForm() {
+    var listeningHoursInput = document.getElementById("listeningHours");
+    var listeningMinutesInput = document.getElementById("listeningMinutes");
+    var readingHoursInput = document.getElementById("readingHours");
+    var readingMinutesInput = document.getElementById("readingMinutes");
+    var writingHoursInput = document.getElementById("writingHours");
+    var writingMinutesInput = document.getElementById("writingMinutes");
+    var speakingHoursInput = document.getElementById("speakingHours");
+    var speakingMinutesInput = document.getElementById("speakingMinutes");
+    var totalHours = Number(listeningHoursInput.value) + Number(readingHoursInput.value) + Number(writingHoursInput.value) + Number(speakingHoursInput.value);
+    var totalMinutes = Number(listeningMinutesInput.value) + Number(readingMinutesInput.value) + Number(writingMinutesInput.value) + Number(speakingMinutesInput.value);
+
+    var hours = {"listeningHours": listeningHoursInput.value,
+                 "listeningMinutes": listeningMinutesInput.value,
+                 "readingHours": readingHoursInput.value,
+                 "readingMinutes": readingMinutesInput.value,
+                 "writingHours": writingHoursInput.value,
+                 "writingMinutes": writingMinutesInput.value,
+                 "speakingHours": speakingHoursInput.value,
+                 "speakingMinutes": speakingMinutesInput.value,
+                 "totalHours": totalHours,
+                 "totalMinutes": totalMinutes,};
+
+    localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, JSON.stringify(hours));
+    
+}
+
 function closeForm() {
-    //var hoursInput = document.getElementById("hours");
-    //localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, hoursInput.value)
     document.getElementById("form").style.display = "none";
 }
