@@ -32,6 +32,7 @@ function updateCalendar() {
             current_day = date.target.id;
             current_day_edited = current_day;
             document.getElementById("form").style.display = "block";
+            document.getElementById("formDate").innerHTML = "Date: " + String(current_month + 1) + "-" + String(current_day) + "-" + String(current_year);
             var hours = localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day);
             if (hours == null) {
                 hours = 0;
@@ -62,7 +63,7 @@ function nextMonth() {
 }
 
 function closeForm() {
-    var hoursInput = document.getElementById("hours");
-    localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, hoursInput.value)
+    //var hoursInput = document.getElementById("hours");
+    //localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, hoursInput.value)
     document.getElementById("form").style.display = "none";
 }

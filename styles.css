@@ -55,3 +55,9 @@
     display: inline-block;
     border-style: solid;
 }
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
