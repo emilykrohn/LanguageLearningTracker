@@ -36,9 +36,17 @@ function updateCalendar() {
 
             if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
                 var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
+                document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
+                document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
+                document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
+                document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
                 document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
             } else {
-                document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes<\p>";
+                document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
+                document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
+                document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
+                document.getElementById("speaking").innerHTML = "<p>Speaking: 0 hour(s) and 0 minute(s)</p>";
+                document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes</p>";
             }
         });
     }
