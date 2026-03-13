@@ -29,10 +29,12 @@ function updateCalendar() {
     var current_day = 0;
     for (var i = 0; i < dates.length; i++) {
         dates[i].addEventListener("click", (date) => {
-            current_day = date.target.id;
+            current_day = date.target.id - firstWeekDay + 1;
             current_day_edited = current_day;
-            document.getElementById("form").style.display = "block";
-            document.getElementById("formDate").innerHTML = "Date: " + String(current_month + 1) + "-" + String(current_day) + "-" + String(current_year);
+            if (current_day > 0 && current_day <= daysInCurrentMonth) {
+                document.getElementById("form").style.display = "block";
+                document.getElementById("formDate").innerHTML = "Date: " + String(current_month + 1) + "-" + String(current_day) + "-" + String(current_year);
+            }
 
             if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
                 var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
@@ -100,5 +102,6 @@ function saveForm() {
 }
 
 function closeForm() {
+    updateCalendar();
     document.getElementById("form").style.display = "none";
 }
