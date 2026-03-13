@@ -52,6 +52,10 @@
     border-style: solid;
 }
 
+.currentSquare {
+    background-color: #6495ed;
+}
+
 .currentDay {
     height: 80px;
     width: 80px;

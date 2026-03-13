@@ -10,8 +10,8 @@
     <div id="container">
         <div id="calendar" class="section">
             <p id="monthAndYear">Month Year</p>
-            <input type="button" value="Previous" onclick="previousMonth();">
-            <input type="button" value="Next" onclick="nextMonth();">
+            <input type="button" value="Previous" class="previous" onclick="previousMonth();">
+            <input type="button" value="Next" class="next" onclick="nextMonth();">
             <br>
             <p id="weekDay"> Su </p>
             <p id="weekDay"> M </p>
@@ -109,7 +109,7 @@
                 <p id="28" class="day"></p>
             </div>
             <br>
-            <div class="squares">
+            <div id="29" class="squares">
                 <p id="29" class="day">&nbsp;</p>
             </div>
             <div id="30" class="squares">

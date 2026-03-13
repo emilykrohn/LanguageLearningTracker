@@ -7,6 +7,7 @@ current_day = today.getDay();
 updateCalendar();
 
 var current_day_edited = 0;
+var previous_selected = null;
 
 function updateCalendar() {
     document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
@@ -25,30 +26,52 @@ function updateCalendar() {
             document.getElementById(String(i)).innerHTML = '&nbsp;';
         }
     }
+    const nextButton = document.getElementsByClassName("next");
+    const previousButton = document.getElementsByClassName("previous");
+    nextButton[0].addEventListener("click", () => {
+        if (previous_selected !== null) {
+            document.getElementById(String(previous_selected)).classList.remove("currentSquare");
+        }
+        previous_selected = null;
+    });
+    
+    previousButton[0].addEventListener("click", () => {
+        if (previous_selected !== null) {
+            document.getElementById(String(previous_selected)).classList.remove("currentSquare");
+        }
+        previous_selected = null;
+    });
+
     const dates = document.getElementsByClassName("squares");
     var current_day = 0;
     for (var i = 0; i < dates.length; i++) {
         dates[i].addEventListener("click", (date) => {
             current_day = date.target.id - firstWeekDay + 1;
             current_day_edited = current_day;
-            if (current_day > 0 && current_day <= daysInCurrentMonth) {
-                document.getElementById("form").style.display = "block";
-                document.getElementById("formDate").innerHTML = "Date: " + String(current_month + 1) + "-" + String(current_day) + "-" + String(current_year);
-            }
+                if (current_day > 0 && current_day <= daysInCurrentMonth) {
+                    document.getElementById("form").style.display = "block";
+                    document.getElementById("formDate").innerHTML = "Date: " + String(current_month + 1) + "-" + String(current_day) + "-" + String(current_year);
 
-            if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
-                var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
-                document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
-                document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
-                document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
-                document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
-                document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
-            } else {
-                document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
-                document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
-                document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
-                document.getElementById("speaking").innerHTML = "<p>Speaking: 0 hour(s) and 0 minute(s)</p>";
-                document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes</p>";
+                    if (previous_selected !== null) {
+                        document.getElementById(String(previous_selected)).classList.remove("currentSquare");
+                    }
+                    document.getElementById(String(date.target.id)).classList.add("currentSquare");
+                    previous_selected = date.target.id;
+
+                    if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
+                        var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
+                        document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
+                        document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
+                        document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
+                        document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
+                        document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
+                    } else {
+                        document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
+                        document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
+                        document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
+                        document.getElementById("speaking").innerHTML = "<p>Speaking: 0 hour(s) and 0 minute(s)</p>";
+                        document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes</p>";
+                    }
             }
         });
     }
