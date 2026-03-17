@@ -1,3 +1,5 @@
+import { main, cardReviewsByDay } from './anki.js';
+
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const today = new Date();
 
@@ -10,20 +12,20 @@ var current_day = today.getDay();
 var current_day_edited = 0;
 // Keeps track of day already selected so it can be unselected when another day is selected
 var previous_selected = null;
-
 // Create initial calendar
 updateCalendar();
 
 
 // Update the calendar to the current date the user has moved to
-function updateCalendar() {
+async function updateCalendar() {
+    await main();
     // Update text at top of calendar of homepage to the current month and year
     document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
     
-    daysInCurrentMonth = daysInMonth(current_month + 1, current_year, 0);
-    firstWeekDay = new Date(current_year, current_month, 1).getDay() + 1
+    var daysInCurrentMonth = daysInMonth(current_month + 1, current_year, 0);
+    var firstWeekDay = new Date(current_year, current_month, 1).getDay() + 1
     // Counts the current day that will be written to the calendar
-    day_counter = 0
+    var day_counter = 0
     // Writes blank spaces for days that do not belong to the current month the user is looking at
     for (var i = 1; i <= 37; i++) {
         if (i >= firstWeekDay && i < daysInCurrentMonth + firstWeekDay) {
@@ -76,6 +78,11 @@ function updateCalendar() {
                 // Update the prevously selected day to the current
                 previous_selected = date.target.id;
 
+                if ((current_month + 1) <= 9) {
+                    console.log(cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day]);
+                } else {
+                    document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
+                }
                 // If current day selected has data already stored in local storage, display that information
                 if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
                     var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
@@ -83,12 +90,18 @@ function updateCalendar() {
                     document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
                     document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
                     document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
+                    if ((current_month + 1) <= 9) {
+                        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
+                    } else {
+                        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
+                    }
                     document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
                 } else {
                     document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
                     document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
                     document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
                     document.getElementById("speaking").innerHTML = "<p>Speaking: 0 hour(s) and 0 minute(s)</p>";
+                    document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: 0 card(s)</label><br>';
                     document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes</p>";
                 }
             }

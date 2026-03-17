@@ -1,5 +1,5 @@
 // Using Anki-Connect API: https://git.sr.ht/~foosoft/anki-connect#statistic-actions
-
+var cardReviewsByDay = []
 function invoke(action, version, params={}) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -30,10 +30,10 @@ function invoke(action, version, params={}) {
     });
 }
 
-async function main() {
+export async function main() {
     const result = await invoke('getNumCardsReviewedByDay', 6);
-    var entries = Object.entries(result);
-    console.log(entries);
+    cardReviewsByDay = Object.fromEntries(result);
+    console.log(cardReviewsByDay);
 }
 
-main()
+export { cardReviewsByDay };
