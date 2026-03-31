@@ -81,19 +81,22 @@ async function updateCalendar() {
                 previous_selected = date.target.id;
 
                 if ((current_month + 1) <= 9) {
-                    console.log(cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day]);
+                    document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + reviewCardAmount + " card(s)</label><br>";
                 } else {
                     document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
                 }
                 // If current day selected has data already stored in local storage, display that information
                 if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
+                    console.log("test");
                     var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
                     document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
                     document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
                     document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
                     document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
                     if ((current_month + 1) <= 9) {
-                        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
+                        var reviewCardAmount = cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day];
+                        console.log(reviewCardAmount);
+                        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + reviewCardAmount + " card(s)</label><br>";
                     } else {
                         document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
                     }
@@ -135,6 +138,8 @@ function nextMonth() {
     updateCalendar();
 }
 
+document.getElementById("saveButton").addEventListener("click", saveForm);
+
 function saveForm() {
     var listeningHoursInput = document.getElementById("listeningHours");
     var listeningMinutesInput = document.getElementById("listeningMinutes");
@@ -159,8 +164,9 @@ function saveForm() {
                  "totalMinutes": totalMinutes,};
 
     localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, JSON.stringify(hours));
-    
 }
+
+document.getElementById("cancelButton").addEventListener("click", closeForm);
 
 function closeForm() {
     updateCalendar();
