@@ -31,8 +31,13 @@ function invoke(action, version, params={}) {
 }
 
 export async function main() {
-    // Get the date and number of cards reviewed each day
-    const result = await invoke('getNumCardsReviewedByDay', 6);
+    var result;
+    try {
+        // Get the date and number of cards reviewed each day
+        result = await invoke('getNumCardsReviewedByDay', 6);
+    } catch(err) {
+        console.log("Error: " + err);
+    }
     // Make this a map where the date is the key and the card count is the value
     cardReviewsByDay = Object.fromEntries(result);
     console.log(cardReviewsByDay);

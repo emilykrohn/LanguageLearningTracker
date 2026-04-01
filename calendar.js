@@ -19,8 +19,12 @@ updateCalendar();
 
 // Update the calendar to the current date the user has moved to
 async function updateCalendar() {
-    // Wait for main to run so that the data for anki has loaded
-    await main();
+    try {
+        // Wait for main to run so that the data for anki has loaded
+        await main();
+    } catch (err) {
+        console.log("Calendar Error: " + err);
+    }
     // Update text at top of calendar of homepage to the current month and year
     document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
     
