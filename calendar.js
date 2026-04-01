@@ -123,6 +123,7 @@ function daysInMonth(month, year) { // 1 - January
     return new Date(year, month , 0).getDate();
 }
 
+document.getElementById("previous").addEventListener("click", previousMonth);
 function previousMonth() {
     if (current_month >= 1) {
         current_month -= 1;
@@ -133,6 +134,7 @@ function previousMonth() {
     updateCalendar();
 }
 
+document.getElementById("next").addEventListener("click", nextMonth);
 function nextMonth() {
     if (current_month <= 10) {
         current_month += 1;
@@ -144,7 +146,6 @@ function nextMonth() {
 }
 
 document.getElementById("saveButton").addEventListener("click", saveForm);
-
 function saveForm() {
     var listeningHoursInput = document.getElementById("listeningHours");
     var listeningMinutesInput = document.getElementById("listeningMinutes");
@@ -172,7 +173,6 @@ function saveForm() {
 }
 
 document.getElementById("cancelButton").addEventListener("click", closeForm);
-
 function closeForm() {
     updateCalendar();
     document.getElementById("form").style.display = "none";
