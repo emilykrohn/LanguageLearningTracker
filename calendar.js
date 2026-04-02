@@ -29,9 +29,10 @@ async function updateCalendar() {
     document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
     
     var daysInCurrentMonth = daysInMonth(current_month + 1, current_year, 0);
-    var firstWeekDay = new Date(current_year, current_month, 1).getDay() + 1
+    var firstWeekDay = new Date(current_year, current_month, 1).getDay() + 1;
     // Counts the current day that will be written to the calendar
-    var day_counter = 0
+    var day_counter = 0;
+    var unusedSquares = [];
     // Writes blank spaces for days that do not belong to the current month the user is looking at
     for (var i = 1; i <= 37; i++) {
         if (i >= firstWeekDay && i < daysInCurrentMonth + firstWeekDay) {
@@ -39,8 +40,11 @@ async function updateCalendar() {
             document.getElementById(String(i)).innerHTML = String(day_counter);
         } else {
             document.getElementById(String(i)).innerHTML = '&nbsp;';
+            document.getElementById(String(i)).classList.add("unusedSquare");
+            unusedSquares.push(String(i));
         }
     }
+    console.log(unusedSquares);
 
     const nextButton = document.getElementsByClassName("next");
     const previousButton = document.getElementsByClassName("previous");
@@ -50,6 +54,9 @@ async function updateCalendar() {
             document.getElementById(String(previous_selected)).classList.remove("currentSquare");
         }
         previous_selected = null;
+        for (var i = 0; i < unusedSquares.length; i++) {
+            document.getElementById(unusedSquares[i]).classList.remove("unusedSquare");
+        }
     });
     
     previousButton[0].addEventListener("click", () => {
@@ -57,6 +64,9 @@ async function updateCalendar() {
             document.getElementById(String(previous_selected)).classList.remove("currentSquare");
         }
         previous_selected = null;
+        for (var i = 0; i < unusedSquares.length; i++) {
+            document.getElementById(unusedSquares[i]).classList.remove("unusedSquare");
+        }
     });
 
     // Store all dates of the current month in dates

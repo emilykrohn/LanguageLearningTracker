@@ -50,6 +50,11 @@
     background-color: antiquewhite;
     display: inline-block;
     border-style: solid;
+    border-radius: 8px;
+}
+
+.unusedSquare {
+    background-color: rgb(180, 170, 156);
 }
 
 .currentSquare {
