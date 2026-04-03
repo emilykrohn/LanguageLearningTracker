@@ -1,0 +1,51 @@
+#daySingleDigit {
+    margin: 5px;
+    display: inline;
+    text-align: end;
+}
+
+#dayDoubleDigit {
+    margin: 5px;
+    display: inline;
+}
+
+#emptyDay {
+    margin: 5px;
+    display: inline;
+}
+
+#weekDay {
+    width: 85px;
+    margin: 0 auto;
+    display: inline-block;
+    text-align: center;
+}
+
+.day {
+    display: inline;
+}
+
+.squares {
+    height: 80px;
+    width: 80px;
+    background-color: antiquewhite;
+    display: inline-block;
+    border-style: solid;
+    border-radius: 8px;
+}
+
+.unusedSquare {
+    background-color: rgb(180, 170, 156);
+}
+
+.currentSquare {
+    background-color: #6495ed;
+}
+
+.currentDay {
+    height: 80px;
+    width: 80px;
+    background-color: cornflowerblue;
+    display: inline-block;
+    border-style: solid;
+}
