@@ -2,6 +2,10 @@
     background-color: beige;
 }
 
+#anki {
+    display: inline;
+}
+
 #daySingleDigit {
     margin: 5px;
     display: inline;

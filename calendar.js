@@ -16,8 +16,8 @@ var previous_selected = null;
 // Create initial calendar
 updateCalendar();
 
-// Update the calendar to the current date the user has moved to
-async function updateCalendar() {
+document.getElementById("reload").addEventListener("click", checkAnkiConnection);
+async function checkAnkiConnection() {
     // Wait for main to run so that the data for anki has loaded
     await main();
     if (isConnectedToAnki) {
@@ -25,6 +25,11 @@ async function updateCalendar() {
     } else {
         document.getElementById("anki").innerHTML = '<p id="anki">Not Connected to anki</p>';
     }
+}
+
+// Update the calendar to the current date the user has moved to
+async function updateCalendar() {
+    checkAnkiConnection();
 
     // Update text at top of calendar of homepage to the current month and year
     document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
