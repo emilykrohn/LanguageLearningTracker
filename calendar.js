@@ -1,5 +1,5 @@
 // Import from anki.js to get anki data to display to user
-import { main, cardReviewsByDay } from './anki.js';
+import { main, cardReviewsByDay, isConnectedToAnki } from './anki.js';
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const today = new Date();
@@ -16,19 +16,16 @@ var previous_selected = null;
 // Create initial calendar
 updateCalendar();
 
-var isConnectedToAnki = false;
-
-
 // Update the calendar to the current date the user has moved to
 async function updateCalendar() {
-    try {
-        // Wait for main to run so that the data for anki has loaded
-        await main();
-        isConnectedToAnki = true;
-    } catch (err) {
-        console.log("Calendar Error: " + err);
-        isConnectedToAnki = false;
+    // Wait for main to run so that the data for anki has loaded
+    await main();
+    if (isConnectedToAnki) {
+        document.getElementById("anki").innerHTML = '<p id="anki">Connected to anki</p>';
+    } else {
+        document.getElementById("anki").innerHTML = '<p id="anki">Not Connected to anki</p>';
     }
+
     // Update text at top of calendar of homepage to the current month and year
     document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
     

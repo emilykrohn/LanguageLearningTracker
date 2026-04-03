@@ -1,5 +1,6 @@
 // Using Anki-Connect API: https://git.sr.ht/~foosoft/anki-connect#statistic-actions
 var cardReviewsByDay = []
+var isConnectedToAnki = false;
 function invoke(action, version, params={}) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -31,17 +32,19 @@ function invoke(action, version, params={}) {
 }
 
 export async function main() {
-    var result;
+    var result = null;
     try {
         // Get the date and number of cards reviewed each day
         result = await invoke('getNumCardsReviewedByDay', 6);
         // Make this a map where the date is the key and the card count is the value
         cardReviewsByDay = Object.fromEntries(result);
+        isConnectedToAnki = true;
     } catch (err) {
         console.log("Error: " + err);
+        isConnectedToAnki = false;
     }
     console.log(cardReviewsByDay);
 }
 
 // Export the map for card reviews to be used in calendar.js
-export { cardReviewsByDay };
+export { cardReviewsByDay, isConnectedToAnki };
