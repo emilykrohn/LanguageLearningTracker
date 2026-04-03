@@ -3,3 +3,14 @@
     width: fit-content;
     margin: auto;
 }
+
+label {
+    font-family: monospace;
+    font-size: 15px;
+}
+
+button, #previous, #next, #reload {
+    border-radius: 8px;
+    width: 80px;
+    height: 30px;
+}
