@@ -9,12 +9,26 @@ var current_month = today.getMonth();
 var current_year = today.getFullYear()
 var current_day = today.getDay();
 
+var firstWeekDay = 0;
+var daysInCurrentMonth = 0;
+
+const nextButton = document.getElementsByClassName("next");
+const previousButton = document.getElementsByClassName("previous");
+
+var unusedSquares = [];
+
 // Keeps track of the day that has been just edited, used in saveForm()
 var current_day_edited = 0;
 // Keeps track of day already selected so it can be unselected when another day is selected
 var previous_selected = null;
+
+// Check if the website is connected to anki
+checkAnkiConnection();
 // Create initial calendar
 updateCalendar();
+// Add event listeners so the previous and next buttons update selected square color
+updateSelectedSquare(previousButton);
+updateSelectedSquare(nextButton);
 
 document.getElementById("reload").addEventListener("click", checkAnkiConnection);
 async function checkAnkiConnection() {
@@ -29,16 +43,15 @@ async function checkAnkiConnection() {
 
 // Update the calendar to the current date the user has moved to
 async function updateCalendar() {
-    checkAnkiConnection();
-
     // Update text at top of calendar of homepage to the current month and year
     document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
     
-    var daysInCurrentMonth = daysInMonth(current_month + 1, current_year, 0);
-    var firstWeekDay = new Date(current_year, current_month, 1).getDay() + 1;
+    daysInCurrentMonth = daysInMonth(current_month + 1, current_year, 0);
+    firstWeekDay = new Date(current_year, current_month, 1).getDay() + 1;
     // Counts the current day that will be written to the calendar
     var day_counter = 0;
-    var unusedSquares = [];
+    // Remove the previous unused dates from previous month
+    unusedSquares = [];
     // Writes blank spaces for days that do not belong to the current month the user is looking at
     for (var i = 1; i <= 37; i++) {
         if (i >= firstWeekDay && i < daysInCurrentMonth + firstWeekDay) {
@@ -50,12 +63,13 @@ async function updateCalendar() {
             unusedSquares.push(String(i));
         }
     }
-    console.log(unusedSquares);
 
-    const nextButton = document.getElementsByClassName("next");
-    const previousButton = document.getElementsByClassName("previous");
+    updateForm();
+}
+
+function updateSelectedSquare(buttonType) {
     // Remove the change in color from the currently pressed date on the calendar when the next or previous button is pressed
-    nextButton[0].addEventListener("click", () => {
+    buttonType[0].addEventListener("click", () => {
         if (previous_selected !== null) {
             document.getElementById(String(previous_selected)).classList.remove("currentSquare");
         }
@@ -64,17 +78,9 @@ async function updateCalendar() {
             document.getElementById(unusedSquares[i]).classList.remove("unusedSquare");
         }
     });
-    
-    previousButton[0].addEventListener("click", () => {
-        if (previous_selected !== null) {
-            document.getElementById(String(previous_selected)).classList.remove("currentSquare");
-        }
-        previous_selected = null;
-        for (var i = 0; i < unusedSquares.length; i++) {
-            document.getElementById(unusedSquares[i]).classList.remove("unusedSquare");
-        }
-    });
+}
 
+function updateForm() {
     // Store all dates of the current month in dates
     const dates = document.getElementsByClassName("squares");
     // Display form when day is pressed on calendar
@@ -102,7 +108,6 @@ async function updateCalendar() {
 
                 // If current day selected has data already stored in local storage, display that information
                 if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
-                    console.log("test");
                     var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
                     document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
                     document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
@@ -188,6 +193,7 @@ function saveForm() {
                  "totalMinutes": totalMinutes,};
 
     localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, JSON.stringify(hours));
+    updateCalendar();
 }
 
 document.getElementById("cancelButton").addEventListener("click", closeForm);
