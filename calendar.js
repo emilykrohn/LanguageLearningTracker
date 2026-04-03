@@ -16,14 +16,18 @@ var previous_selected = null;
 // Create initial calendar
 updateCalendar();
 
+var isConnectedToAnki = false;
+
 
 // Update the calendar to the current date the user has moved to
 async function updateCalendar() {
     try {
         // Wait for main to run so that the data for anki has loaded
         await main();
+        isConnectedToAnki = true;
     } catch (err) {
         console.log("Calendar Error: " + err);
+        isConnectedToAnki = false;
     }
     // Update text at top of calendar of homepage to the current month and year
     document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
@@ -102,17 +106,19 @@ async function updateCalendar() {
                     document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
                     document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
                     document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
-                    if ((current_month + 1) <= 9) {
-                        if (current_day <= 9) {
-                            document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-0" + current_day] + " card(s)</label><br>";
+                    if (isConnectedToAnki) {
+                        if ((current_month + 1) <= 9) {
+                            if (current_day <= 9) {
+                                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-0" + current_day] + " card(s)</label><br>";
+                            } else {
+                                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
+                            }
                         } else {
-                            document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
-                        }
-                    } else {
-                        if (current_day <= 9) {
-                            document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-0" + current_day] + " card(s)</label><br>";
-                        } else {
-                            document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
+                            if (current_day <= 9) {
+                                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-0" + current_day] + " card(s)</label><br>";
+                            } else {
+                                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
+                            }
                         }
                     }
                     document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
