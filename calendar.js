@@ -108,12 +108,16 @@ function updateForm() {
 
                 // If current day selected has data already stored in local storage, display that information
                 if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
+                    // Get the hours and minutes for each catagory
                     var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
+                    // Display all of the data stored in local storage for these categories
                     document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
                     document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
                     document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
                     document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
+                    // If user is connected to anki, show anki stats
                     if (isConnectedToAnki) {
+                        // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
                         if ((current_month + 1) <= 9) {
                             if (current_day <= 9) {
                                 document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-0" + current_day] + " card(s)</label><br>";
@@ -130,6 +134,7 @@ function updateForm() {
                     }
                     document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
                 } else {
+                    // If there is no data for this day, display 0 hours and minutes for all categories
                     document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
                     document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
                     document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
@@ -142,34 +147,38 @@ function updateForm() {
     }
 }
 
+// Given a month and year, return the number of days in that month
 function daysInMonth(month, year) { // 1 - January
     return new Date(year, month , 0).getDate();
 }
 
 document.getElementById("previous").addEventListener("click", previousMonth);
+// Update current month to the previous month for the previous month button
 function previousMonth() {
     if (current_month >= 1) {
         current_month -= 1;
-    } else {
-        current_month = 11;
-        current_year -= 1;
+    } else { // If the month is January, change the current month to December
+        current_month = 11; // Index starts from 0 so 11 represents December
+        current_year -= 1; // Update to previous year
     }
-    updateCalendar();
+    updateCalendar(); // Update calendar to reflect changes
 }
 
 document.getElementById("next").addEventListener("click", nextMonth);
 function nextMonth() {
     if (current_month <= 10) {
         current_month += 1;
-    } else {
-        current_month = 0;
-        current_year += 1;
+    } else { // If the month is December, change the current month to January
+        current_month = 0; // Index starts at 0 so 0 represents January
+        current_year += 1; // Update to next year
     }
-    updateCalendar();
+    updateCalendar(); // Update calendar to reflect changes
 }
 
 document.getElementById("saveButton").addEventListener("click", saveForm);
+// Function is run when the save button from the form is pressed
 function saveForm() {
+    // Get the input from each of the document elements for each category hours and minutes
     var listeningHoursInput = document.getElementById("listeningHours");
     var listeningMinutesInput = document.getElementById("listeningMinutes");
     var readingHoursInput = document.getElementById("readingHours");
@@ -178,9 +187,11 @@ function saveForm() {
     var writingMinutesInput = document.getElementById("writingMinutes");
     var speakingHoursInput = document.getElementById("speakingHours");
     var speakingMinutesInput = document.getElementById("speakingMinutes");
+    // Add all hour and minute amounts
     var totalHours = Number(listeningHoursInput.value) + Number(readingHoursInput.value) + Number(writingHoursInput.value) + Number(speakingHoursInput.value);
     var totalMinutes = Number(listeningMinutesInput.value) + Number(readingMinutesInput.value) + Number(writingMinutesInput.value) + Number(speakingMinutesInput.value);
 
+    // Create dictionary of all input that will be stored in local storage
     var hours = {"listeningHours": listeningHoursInput.value,
                  "listeningMinutes": listeningMinutesInput.value,
                  "readingHours": readingHoursInput.value,
@@ -192,12 +203,14 @@ function saveForm() {
                  "totalHours": totalHours,
                  "totalMinutes": totalMinutes,};
 
+    // Store the year and dictionary of hours to local storage
     localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, JSON.stringify(hours));
     updateCalendar();
 }
 
 document.getElementById("cancelButton").addEventListener("click", closeForm);
+// Function run when the close form button is pressed
 function closeForm() {
     updateCalendar();
-    document.getElementById("form").style.display = "none";
+    document.getElementById("form").style.display = "none"; // Change to display to none so the form is hidden
 }
