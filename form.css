@@ -9,6 +9,10 @@ label {
     font-size: 15px;
 }
 
+#next {
+    float: right;
+}
+
 button, #previous, #next, #reload {
     border-radius: 8px;
     width: 80px;
