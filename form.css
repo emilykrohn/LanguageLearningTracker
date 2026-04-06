@@ -1,21 +1,30 @@
+label {
+    font-family: monospace;
+    font-size: 15px;
+}
+
 #form {
     display: none;
     width: fit-content;
     margin: auto;
 }
 
-label {
-    font-family: monospace;
-    font-size: 15px;
-}
-
 #next {
     float: right;
 }
 
+#formButtonContainer {
+    text-align: center;
+    left: 50%;
+}
+
 button, #previous, #next, #reload {
     border-radius: 8px;
-    width: 80px;
+    width: 100px;
     height: 30px;
     font-family: monospace;
+}
+
+button {
+    margin: 0px 15px;
 }
