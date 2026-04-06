@@ -214,3 +214,10 @@ function closeForm() {
     updateCalendar();
     document.getElementById("form").style.display = "none"; // Change to display to none so the form is hidden
 }
+
+document.getElementById("clearButton").addEventListener("click", clearForm);
+// Clears local storage data for currently selected day
+function clearForm() {
+    localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited);
+    updateCalendar();
+}
