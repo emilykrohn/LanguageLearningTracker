@@ -209,19 +209,19 @@ function saveForm() {
 
     // Store the year and dictionary of hours to local storage
     localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, JSON.stringify(hours));
-    updateCalendar();
+    updateForm();
 }
 
 document.getElementById("cancelButton").addEventListener("click", closeForm);
 // Function run when the close form button is pressed
 function closeForm() {
-    updateCalendar();
+    updateForm();
     document.getElementById("form").style.display = "none"; // Change to display to none so the form is hidden
 }
 
 document.getElementById("clearButton").addEventListener("click", clearForm);
 // Clears local storage data for currently selected day
 function clearForm() {
-    localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited);
-    updateCalendar();
+    localStorage.removeItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited);
+    updateForm();
 }
