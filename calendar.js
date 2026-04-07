@@ -187,6 +187,22 @@ function saveForm() {
     var writingMinutesInput = document.getElementById("writingMinutes");
     var speakingHoursInput = document.getElementById("speakingHours");
     var speakingMinutesInput = document.getElementById("speakingMinutes");
+    var cardReviews = 0;
+    // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
+    if ((current_month + 1) <= 9) {
+        if (current_day <= 9) {
+            cardReviews = cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-0" + current_day];
+        } else {
+            cardReviews = cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day];
+        }
+    } else {
+        if (current_day <= 9) {
+            cardReviews = cardReviewsByDay[current_year + "-" + (current_month + 1) + "-0" + current_day];
+        } else {
+            cardReviews = cardReviewsByDay[current_year + "-" + (current_month + 1) + "-" + current_day];
+        }
+    }
+
     // Add all hour and minute amounts
     var totalHours = Number(listeningHoursInput.value) + Number(readingHoursInput.value) + Number(writingHoursInput.value) + Number(speakingHoursInput.value);
     var totalMinutes = Number(listeningMinutesInput.value) + Number(readingMinutesInput.value) + Number(writingMinutesInput.value) + Number(speakingMinutesInput.value);
@@ -201,7 +217,8 @@ function saveForm() {
                  "speakingHours": speakingHoursInput.value,
                  "speakingMinutes": speakingMinutesInput.value,
                  "totalHours": totalHours,
-                 "totalMinutes": totalMinutes,};
+                 "totalMinutes": totalMinutes,
+                 "cardReviews": cardReviews,};
 
     // Store the year and dictionary of hours to local storage
     localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, JSON.stringify(hours));
