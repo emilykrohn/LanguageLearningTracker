@@ -117,20 +117,7 @@ function updateForm() {
                     document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
                     // If user is connected to anki, show anki stats
                     if (isConnectedToAnki) {
-                        // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
-                        if ((current_month + 1) <= 9) {
-                            if (current_day <= 9) {
-                                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-0" + current_day] + " card(s)</label><br>";
-                            } else {
-                                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
-                            }
-                        } else {
-                            if (current_day <= 9) {
-                                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-0" + current_day] + " card(s)</label><br>";
-                            } else {
-                                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cardReviewsByDay[current_year + "-" + (current_month + 1) + "-" + current_day] + " card(s)</label><br>";
-                            }
-                        }
+                        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + dateHours["cardReviews"] + " card(s)</label><br>";
                     }
                     document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
                 } else {
