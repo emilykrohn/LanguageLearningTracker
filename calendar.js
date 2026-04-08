@@ -4,11 +4,6 @@ import { main, cardReviewsByDay, isConnectedToAnki } from './anki.js';
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const today = new Date();
 
-// Set date to the present day the user is accessing the application on
-var current_month = today.getMonth();
-var current_year = today.getFullYear()
-var current_day = today.getDay();
-
 var firstWeekDay = 0;
 var daysInCurrentMonth = 0;
 
@@ -22,6 +17,40 @@ var current_day_edited = 0;
 // Keeps track of day already selected so it can be unselected when another day is selected
 var previous_selected = null;
 
+class CalendarDate {
+    constructor(day, month, year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    getCalendarDay() {
+        return this.day;
+    }
+    setCalendarDay(day) {
+        this.day = day;
+    }
+    getCalendarMonth() {
+        return this.month;
+    }
+    setCalendarMonth(month) {
+        this.month = month;
+    }
+    getCalendarYear() {
+        return this.year;
+    }
+    setCalendarYear(year) {
+        this.year = year;
+    }
+
+    getCalendarDate() {
+        return String(this.year) + "-" + String(this.month + 1) + "-" + String(this.day);
+    }
+}
+
+// Set date to the present day the user is accessing the application on
+var selected_date = new CalendarDate(today.getDay(), today.getMonth(), today.getFullYear());
+
 // Check if the website is connected to anki
 checkAnkiConnection();
 // Create initial calendar
@@ -29,6 +58,7 @@ updateCalendar();
 // Add event listeners so the previous and next buttons update selected square color
 updateSelectedSquare(previousButton);
 updateSelectedSquare(nextButton);
+
 
 document.getElementById("reload").addEventListener("click", checkAnkiConnection);
 async function checkAnkiConnection() {
@@ -43,11 +73,12 @@ async function checkAnkiConnection() {
 
 // Update the calendar to the current date the user has moved to
 async function updateCalendar() {
+    console.log(selected_date.getCalendarMonth());
     // Update text at top of calendar of homepage to the current month and year
-    document.getElementById("monthAndYear").innerHTML = String(months[current_month]) + ' ' + String(current_year);
+    document.getElementById("monthAndYear").innerHTML = String(months[selected_date.getCalendarMonth()]) + ' ' + String(selected_date.getCalendarYear());
     
-    daysInCurrentMonth = daysInMonth(current_month + 1, current_year, 0);
-    firstWeekDay = new Date(current_year, current_month, 1).getDay() + 1;
+    daysInCurrentMonth = daysInMonth(selected_date.getCalendarMonth() + 1, selected_date.getCalendarYear(), 0);
+    firstWeekDay = new Date(selected_date.getCalendarYear(), selected_date.getCalendarMonth(), 1).getDay() + 1;
     // Counts the current day that will be written to the calendar
     var day_counter = 0;
     // Remove the previous unused dates from previous month
@@ -85,10 +116,10 @@ function addDateEventListeners() {
     const dates = document.getElementsByClassName("squares");
     for (var i = 0; i < dates.length; i++) {
         dates[i].addEventListener("click", (date) => {
-            current_day = date.target.id - firstWeekDay + 1;
-            current_day_edited = current_day;
+            selected_date.setCalendarDay(date.target.id - firstWeekDay + 1);
+            current_day_edited = selected_date.getCalendarDay();
             // Only shows form if day clicked is in the current month being viewed
-            if (current_day > 0 && current_day <= daysInCurrentMonth) {
+            if (selected_date.getCalendarDay() > 0 && selected_date.getCalendarDay() <= daysInCurrentMonth) {
                 // Add the currentSquare class to the current day
                 document.getElementById(String(date.target.id)).classList.add("currentSquare");
                 // Update the prevously selected day to the current
@@ -111,7 +142,7 @@ function updateForm() {
     // Make form visible
     document.getElementById("form").style.display = "block";
     // Change the formDate Label to display the current date of the day selected
-    document.getElementById("formDate").innerHTML = "Date: " + String(current_month + 1) + "-" + String(current_day) + "-" + String(current_year);
+    document.getElementById("formDate").innerHTML = "Date: " + selected_date.getCalendarDate();
 
     // If a previous day has been selected, remove the currentSquare class that makes that square a different color
     if (previous_selected !== null) {
@@ -119,9 +150,9 @@ function updateForm() {
     }
 
     // If current day selected has data already stored in local storage, display that information
-    if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
+    if (localStorage.getItem(selected_date.getCalendarDate()) !== null) {
         // Get the hours and minutes for each catagory
-        var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
+        var dateHours = JSON.parse(localStorage.getItem(selected_date.getCalendarDate()));
         // Display all of the data stored in local storage for these categories
         document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
         document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
@@ -151,22 +182,22 @@ function daysInMonth(month, year) { // 1 - January
 document.getElementById("previous").addEventListener("click", previousMonth);
 // Update current month to the previous month for the previous month button
 function previousMonth() {
-    if (current_month >= 1) {
-        current_month -= 1;
+    if (selected_date.getCalendarMonth() >= 1) {
+        selected_date.setCalendarMonth(selected_date.getCalendarDay - 1);
     } else { // If the month is January, change the current month to December
-        current_month = 11; // Index starts from 0 so 11 represents December
-        current_year -= 1; // Update to previous year
+        selected_date.setCalendarMonth(11); // Index starts from 0 so 11 represents December
+        selected_date.seCalendartYear(selected_date.getCalendarYear() - 1); // Update to previous year
     }
     updateCalendar(); // Update calendar to reflect changes
 }
 
 document.getElementById("next").addEventListener("click", nextMonth);
 function nextMonth() {
-    if (current_month <= 10) {
-        current_month += 1;
+    if (selected_date.getCalendarMonth() <= 10) {
+        selected_date.setCalendarMonth(selected_date.getCalendarMonth() + 1);
     } else { // If the month is December, change the current month to January
-        current_month = 0; // Index starts at 0 so 0 represents January
-        current_year += 1; // Update to next year
+        selected_date.setCalendarMonth(0); // Index starts at 0 so 0 represents January
+        selected_date.setCalendarYear(selected_date.getCalendarYear() + 1); // Update to next year
     }
     updateCalendar(); // Update calendar to reflect changes
 }
@@ -185,17 +216,17 @@ function saveForm() {
     var speakingMinutesInput = document.getElementById("speakingMinutes");
     var cardReviews = 0;
     // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
-    if ((current_month + 1) <= 9) {
-        if (current_day <= 9) {
-            cardReviews = cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-0" + current_day];
+    if ((selected_date.getCalendarMonth() + 1) <= 9) {
+        if (selected_date.getCalendarDay() <= 9) {
+            cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-0" + (selected_date.getCalendarMonth() + 1) + "-0" + selected_date.getCalendarDay()];
         } else {
-            cardReviews = cardReviewsByDay[current_year + "-0" + (current_month + 1) + "-" + current_day];
+            cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-0" + (selected_date.getCalendarMonth() + 1) + "-" + selected_date.getCalendarDay()];
         }
     } else {
-        if (current_day <= 9) {
-            cardReviews = cardReviewsByDay[current_year + "-" + (current_month + 1) + "-0" + current_day];
+        if (selected_date.getCalendarDay() <= 9) {
+            cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-0" + selected_date.getCalendarDay()];
         } else {
-            cardReviews = cardReviewsByDay[current_year + "-" + (current_month + 1) + "-" + current_day];
+            cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + selected_date.getCalendarDay()];
         }
     }
 
@@ -217,7 +248,7 @@ function saveForm() {
                  "cardReviews": cardReviews,};
 
     // Store the year and dictionary of hours to local storage
-    localStorage.setItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited, JSON.stringify(hours));
+    localStorage.setItem(selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + current_day_edited, JSON.stringify(hours));
     updateForm();
 }
 
@@ -231,6 +262,6 @@ function closeForm() {
 document.getElementById("clearButton").addEventListener("click", clearForm);
 // Clears local storage data for currently selected day
 function clearForm() {
-    localStorage.removeItem(current_year + "-" + (current_month + 1) + "-" + current_day_edited);
+    localStorage.removeItem(selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + current_day_edited);
     updateForm();
 }
