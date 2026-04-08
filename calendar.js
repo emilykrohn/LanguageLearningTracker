@@ -64,7 +64,7 @@ async function updateCalendar() {
         }
     }
 
-    updateForm();
+    addDateEventListeners();
 }
 
 function updateSelectedSquare(buttonType) {
@@ -80,57 +80,66 @@ function updateSelectedSquare(buttonType) {
     });
 }
 
-function updateForm() {
+function addDateEventListeners() {
     // Store all dates of the current month in dates
     const dates = document.getElementsByClassName("squares");
-    // Display form when day is pressed on calendar
     for (var i = 0; i < dates.length; i++) {
-        // Add event listeners to all dates on calendar
         dates[i].addEventListener("click", (date) => {
             current_day = date.target.id - firstWeekDay + 1;
             current_day_edited = current_day;
             // Only shows form if day clicked is in the current month being viewed
             if (current_day > 0 && current_day <= daysInCurrentMonth) {
-                // Make form visible
-                document.getElementById("form").style.display = "block";
-                // Change the formDate Label to display the current date of the day selected
-                document.getElementById("formDate").innerHTML = "Date: " + String(current_month + 1) + "-" + String(current_day) + "-" + String(current_year);
-
-                // If a previous day has been selected, remove the currentSquare class that makes that square a different color
-                if (previous_selected !== null) {
-                    document.getElementById(String(previous_selected)).classList.remove("currentSquare");
-                }
-
                 // Add the currentSquare class to the current day
                 document.getElementById(String(date.target.id)).classList.add("currentSquare");
                 // Update the prevously selected day to the current
                 previous_selected = date.target.id;
-
-                // If current day selected has data already stored in local storage, display that information
-                if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
-                    // Get the hours and minutes for each catagory
-                    var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
-                    // Display all of the data stored in local storage for these categories
-                    document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
-                    document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
-                    document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
-                    document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
-                    // If user is connected to anki, show anki stats
-                    if (isConnectedToAnki) {
-                        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + dateHours["cardReviews"] + " card(s)</label><br>";
-                    }
-                    document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
-                } else {
-                    // If there is no data for this day, display 0 hours and minutes for all categories
-                    document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
-                    document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
-                    document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
-                    document.getElementById("speaking").innerHTML = "<p>Speaking: 0 hour(s) and 0 minute(s)</p>";
-                    document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: 0 card(s)</label><br>';
-                    document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes</p>";
-                }
+                updateForm();
+            } else {
+                // If there is no data for this day, display 0 hours and minutes for all categories
+                document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
+                document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
+                document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
+                document.getElementById("speaking").innerHTML = "<p>Speaking: 0 hour(s) and 0 minute(s)</p>";
+                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: 0 card(s)</label><br>';
+                document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes</p>";
             }
         });
+    }
+}
+
+function updateForm() {
+    // Make form visible
+    document.getElementById("form").style.display = "block";
+    // Change the formDate Label to display the current date of the day selected
+    document.getElementById("formDate").innerHTML = "Date: " + String(current_month + 1) + "-" + String(current_day) + "-" + String(current_year);
+
+    // If a previous day has been selected, remove the currentSquare class that makes that square a different color
+    if (previous_selected !== null) {
+        document.getElementById(String(previous_selected)).classList.remove("currentSquare");
+    }
+
+    // If current day selected has data already stored in local storage, display that information
+    if (localStorage.getItem(String(current_year) + "-" + String(current_month + 1) + "-" + String(current_day)) !== null) {
+        // Get the hours and minutes for each catagory
+        var dateHours = JSON.parse(localStorage.getItem(current_year + "-" + (current_month + 1) + "-" + current_day));
+        // Display all of the data stored in local storage for these categories
+        document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
+        document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
+        document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
+        document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
+        // If user is connected to anki, show anki stats
+        if (isConnectedToAnki) {
+            document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + dateHours["cardReviews"] + " card(s)</label><br>";
+        }
+        document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
+    } else {
+        // If there is no data for this day, display 0 hours and minutes for all categories
+        document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
+        document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
+        document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
+        document.getElementById("speaking").innerHTML = "<p>Speaking: 0 hour(s) and 0 minute(s)</p>";
+        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: 0 card(s)</label><br>';
+        document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes</p>";
     }
 }
 
