@@ -165,12 +165,12 @@ function updateForm() {
         document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
     } else {
         // If there is no data for this day, display 0 hours and minutes for all categories
-        document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
-        document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
-        document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
-        document.getElementById("speaking").innerHTML = "<p>Speaking: 0 hour(s) and 0 minute(s)</p>";
+        document.getElementById("listening").innerHTML = "<label for='Listening' id='listening'>Listening: 0 hour(s) and 0 minute(s)</label><br>";
+        document.getElementById("reading").innerHTML = "<label for='Reading' id='reading'>Reading: 0 hour(s) and 0 minute(s)</label><br>";
+        document.getElementById("writing").innerHTML = "<label for='Writing' id='writing'>Writing: 0 hour(s) and 0 minute(s)</label><br>";
+        document.getElementById("speaking").innerHTML = "<label for='Speaking' id='speaking'>Speaking: 0 hour(s) and 0 minute(s)</label><br>";
         document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: 0 card(s)</label><br>';
-        document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes</p>";
+        document.getElementById("totalTimeRecorded").innerHTML = "<label id='totalTimeRecorded'>Total: 0 Hour(s) and 0 Minutes</label>";
     }
 }
 
