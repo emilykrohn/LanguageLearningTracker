@@ -125,14 +125,6 @@ function addDateEventListeners() {
                 // Update the prevously selected day to the current
                 previous_selected = date.target.id;
                 updateForm();
-            } else {
-                // If there is no data for this day, display 0 hours and minutes for all categories
-                document.getElementById("listening").innerHTML = "<p>Listening: 0 hour(s) and 0 minute(s)</p>";
-                document.getElementById("reading").innerHTML = "<p>Reading: 0 hour(s) and 0 minute(s)</p>";
-                document.getElementById("writing").innerHTML = "<p>Writing: 0 hour(s) and 0 minute(s)</p>";
-                document.getElementById("speaking").innerHTML = "<p>Speaking: 0 hour(s) and 0 minute(s)</p>";
-                document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: 0 card(s)</label><br>';
-                document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minutes</p>";
             }
         });
     }
@@ -149,28 +141,35 @@ function updateForm() {
         document.getElementById(String(previous_selected)).classList.remove("currentSquare");
     }
 
+    var dateHours = [];
     // If current day selected has data already stored in local storage, display that information
     if (localStorage.getItem(selected_date.getCalendarDate()) !== null) {
         // Get the hours and minutes for each catagory
-        var dateHours = JSON.parse(localStorage.getItem(selected_date.getCalendarDate()));
+        dateHours = JSON.parse(localStorage.getItem(selected_date.getCalendarDate()));
+        updateFormDisplayedTime(dateHours);
+    } else {
+        // If there is no data for this day, display 0 hours and minutes for all categories
+        updateFormDisplayedTime(dateHours);
+    }
+}
+
+function updateFormDisplayedTime(dateHours) {
+    if (dateHours.length != 0) {
         // Display all of the data stored in local storage for these categories
         document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
         document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
         document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
         document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
         // If user is connected to anki, show anki stats
-        if (isConnectedToAnki) {
-            document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + dateHours["cardReviews"] + " card(s)</label><br>";
-        }
+        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + dateHours["cardReviews"] + " card(s)</label><br>";
         document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
     } else {
-        // If there is no data for this day, display 0 hours and minutes for all categories
-        document.getElementById("listening").innerHTML = "<label for='Listening' id='listening'>Listening: 0 hour(s) and 0 minute(s)</label><br>";
-        document.getElementById("reading").innerHTML = "<label for='Reading' id='reading'>Reading: 0 hour(s) and 0 minute(s)</label><br>";
-        document.getElementById("writing").innerHTML = "<label for='Writing' id='writing'>Writing: 0 hour(s) and 0 minute(s)</label><br>";
-        document.getElementById("speaking").innerHTML = "<label for='Speaking' id='speaking'>Speaking: 0 hour(s) and 0 minute(s)</label><br>";
+        document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: 0 hour(s) and 0 minute(s)</label><br>';
+        document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: 0 hour(s) and 0 minute(s)</label><br>';
+        document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: 0 hour(s) and 0 minute(s)</label><br>';
+        document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: 0 hour(s) and 0 minute(s)</label><br>';
         document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: 0 card(s)</label><br>';
-        document.getElementById("totalTimeRecorded").innerHTML = "<label id='totalTimeRecorded'>Total: 0 Hour(s) and 0 Minutes</label>";
+        document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minute(s)<\p>";
     }
 }
 
