@@ -214,19 +214,23 @@ function saveForm() {
     var speakingHoursInput = document.getElementById("speakingHours");
     var speakingMinutesInput = document.getElementById("speakingMinutes");
     var cardReviews = 0;
-    // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
-    if ((selected_date.getCalendarMonth() + 1) <= 9) {
-        if (selected_date.getCalendarDay() <= 9) {
-            cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-0" + (selected_date.getCalendarMonth() + 1) + "-0" + selected_date.getCalendarDay()];
+    if (isConnectedToAnki) {
+        // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
+        if ((selected_date.getCalendarMonth() + 1) <= 9) {
+            if (selected_date.getCalendarDay() <= 9) {
+                cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-0" + (selected_date.getCalendarMonth() + 1) + "-0" + selected_date.getCalendarDay()];
+            } else {
+                cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-0" + (selected_date.getCalendarMonth() + 1) + "-" + selected_date.getCalendarDay()];
+            }
         } else {
-            cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-0" + (selected_date.getCalendarMonth() + 1) + "-" + selected_date.getCalendarDay()];
+            if (selected_date.getCalendarDay() <= 9) {
+                cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-0" + selected_date.getCalendarDay()];
+            } else {
+                cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + selected_date.getCalendarDay()];
+            }
         }
     } else {
-        if (selected_date.getCalendarDay() <= 9) {
-            cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-0" + selected_date.getCalendarDay()];
-        } else {
-            cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + selected_date.getCalendarDay()];
-        }
+        cardReviews = document.getElementById("cardsReviewed").value;
     }
 
     // Add all hour and minute amounts
