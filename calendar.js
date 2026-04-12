@@ -222,6 +222,24 @@ class InputAmount {
     }
 }
 
+function getCardReviewsAmount() {
+    // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
+    var date = selected_date.getCalendarYear();
+    if ((selected_date.getCalendarMonth() + 1) <= 9) {
+        date += "-0" + (selected_date.getCalendarMonth() + 1);
+    } else {
+        date += "-" + (selected_date.getCalendarMonth() + 1);
+    }
+
+    if (selected_date.getCalendarDay() <= 9) {
+        date += "-0" + selected_date.getCalendarDay();
+    } else {
+        date += "-" + selected_date.getCalendarDay();
+    }
+    
+    return cardReviewsByDay[date];
+}
+
 document.getElementById("saveButton").addEventListener("click", saveForm);
 // Function is run when the save button from the form is pressed
 function saveForm() {
@@ -234,20 +252,7 @@ function saveForm() {
     var cardReviews = 0;
 
     if (isConnectedToAnki) {
-        // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
-        if ((selected_date.getCalendarMonth() + 1) <= 9) {
-            if (selected_date.getCalendarDay() <= 9) {
-                cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-0" + (selected_date.getCalendarMonth() + 1) + "-0" + selected_date.getCalendarDay()];
-            } else {
-                cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-0" + (selected_date.getCalendarMonth() + 1) + "-" + selected_date.getCalendarDay()];
-            }
-        } else {
-            if (selected_date.getCalendarDay() <= 9) {
-                cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-0" + selected_date.getCalendarDay()];
-            } else {
-                cardReviews = cardReviewsByDay[selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + selected_date.getCalendarDay()];
-            }
-        }
+        cardReviews = getCardReviewsAmount();
     } else {
         cardReviews = document.getElementById("cardsReviewed").value;
     }
