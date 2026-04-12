@@ -201,19 +201,38 @@ function nextMonth() {
     updateCalendar(); // Update calendar to reflect changes
 }
 
+class InputAmount {
+    constructor(hours, minutes) {
+        this._hours = hours;
+        this._minutes = minutes;
+    }
+    
+    get hours() {
+        return this._hours;
+    }
+    set hours(hours) {
+        this._hours = hours;
+    }
+
+    get minutes() {
+        return this._minutes;
+    }
+    set minutes(minutes) {
+        this._minutes = minutes;
+    }
+}
+
 document.getElementById("saveButton").addEventListener("click", saveForm);
 // Function is run when the save button from the form is pressed
 function saveForm() {
     // Get the input from each of the document elements for each category hours and minutes
-    var listeningHoursInput = document.getElementById("listeningHours");
-    var listeningMinutesInput = document.getElementById("listeningMinutes");
-    var readingHoursInput = document.getElementById("readingHours");
-    var readingMinutesInput = document.getElementById("readingMinutes");
-    var writingHoursInput = document.getElementById("writingHours");
-    var writingMinutesInput = document.getElementById("writingMinutes");
-    var speakingHoursInput = document.getElementById("speakingHours");
-    var speakingMinutesInput = document.getElementById("speakingMinutes");
+    var listeningAmount = new InputAmount(document.getElementById("listeningHours"), document.getElementById("listeningMinutes"));
+    var readingAmount = new InputAmount(document.getElementById("readingHours"), document.getElementById("readingMinutes"));
+    var writingAmount = new InputAmount(document.getElementById("writingHours"), document.getElementById("writingMinutes"));
+    var speakingAmount = new InputAmount(document.getElementById("speakingHours"), document.getElementById("speakingMinutes"));
+    
     var cardReviews = 0;
+
     if (isConnectedToAnki) {
         // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
         if ((selected_date.getCalendarMonth() + 1) <= 9) {
@@ -234,18 +253,18 @@ function saveForm() {
     }
 
     // Add all hour and minute amounts
-    var totalHours = Number(listeningHoursInput.value) + Number(readingHoursInput.value) + Number(writingHoursInput.value) + Number(speakingHoursInput.value);
-    var totalMinutes = Number(listeningMinutesInput.value) + Number(readingMinutesInput.value) + Number(writingMinutesInput.value) + Number(speakingMinutesInput.value);
+    var totalHours = Number(listeningAmount.hours.value) + Number(readingAmount.hours.value) + Number(writingAmount.hours.value) + Number(speakingAmount.hours.value);
+    var totalMinutes = Number(listeningAmount.minutes.value) + Number(readingAmount.minutes.value) + Number(writingAmount.minutes.value) + Number(speakingAmount.minutes.value);
 
     // Create dictionary of all input that will be stored in local storage
-    var hours = {"listeningHours": listeningHoursInput.value,
-                 "listeningMinutes": listeningMinutesInput.value,
-                 "readingHours": readingHoursInput.value,
-                 "readingMinutes": readingMinutesInput.value,
-                 "writingHours": writingHoursInput.value,
-                 "writingMinutes": writingMinutesInput.value,
-                 "speakingHours": speakingHoursInput.value,
-                 "speakingMinutes": speakingMinutesInput.value,
+    var hours = {"listeningHours": listeningAmount.hours.value,
+                 "listeningMinutes": listeningAmount.minutes.value,
+                 "readingHours": readingAmount.hours.value,
+                 "readingMinutes": readingAmount.minutes.value,
+                 "writingHours": writingAmount.hours.value,
+                 "writingMinutes": writingAmount.minutes.value,
+                 "speakingHours": speakingAmount.hours.value,
+                 "speakingMinutes": speakingAmount.minutes.value,
                  "totalHours": totalHours,
                  "totalMinutes": totalMinutes,
                  "cardReviews": cardReviews,};
