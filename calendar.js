@@ -71,14 +71,7 @@ async function checkAnkiConnection() {
     }
 }
 
-// Update the calendar to the current date the user has moved to
-async function updateCalendar() {
-    console.log(selected_date.getCalendarMonth());
-    // Update text at top of calendar of homepage to the current month and year
-    document.getElementById("monthAndYear").innerHTML = String(months[selected_date.getCalendarMonth()]) + ' ' + String(selected_date.getCalendarYear());
-    
-    daysInCurrentMonth = daysInMonth(selected_date.getCalendarMonth() + 1, selected_date.getCalendarYear(), 0);
-    firstWeekDay = new Date(selected_date.getCalendarYear(), selected_date.getCalendarMonth(), 1).getDay() + 1;
+function displayDayNumbersOnCalendarSquares() {
     // Counts the current day that will be written to the calendar
     var day_counter = 0;
     // Remove the previous unused dates from previous month
@@ -95,7 +88,16 @@ async function updateCalendar() {
             unusedSquares.push(String(i));
         }
     }
+}
 
+// Update the calendar to the current date the user has moved to
+async function updateCalendar() {
+    // Update text at top of calendar of homepage to the current month and year
+    document.getElementById("monthAndYear").innerHTML = String(months[selected_date.getCalendarMonth()]) + ' ' + String(selected_date.getCalendarYear());
+    daysInCurrentMonth = daysInMonth(selected_date.getCalendarMonth() + 1, selected_date.getCalendarYear(), 0);
+    firstWeekDay = new Date(selected_date.getCalendarYear(), selected_date.getCalendarMonth(), 1).getDay() + 1;
+    
+    displayDayNumbersOnCalendarSquares();
     addDateEventListeners();
 }
 
