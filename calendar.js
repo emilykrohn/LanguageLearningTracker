@@ -49,7 +49,7 @@ class CalendarDate {
 }
 
 // Set date to the present day the user is accessing the application on
-var selected_date = new CalendarDate(today.getDay(), today.getMonth(), today.getFullYear());
+var selected_date = new CalendarDate(today.getDate(), today.getMonth(), today.getFullYear());
 
 // Check if the website is connected to anki
 checkAnkiConnection();
@@ -83,8 +83,9 @@ async function updateCalendar() {
     var day_counter = 0;
     // Remove the previous unused dates from previous month
     unusedSquares = [];
+    const TOTAL_SQUARES_IN_CALENDAR = 37;
     // Writes blank spaces for days that do not belong to the current month the user is looking at
-    for (var i = 1; i <= 37; i++) {
+    for (var i = 1; i <= TOTAL_SQUARES_IN_CALENDAR; i++) {
         if (i >= firstWeekDay && i < daysInCurrentMonth + firstWeekDay) {
             day_counter += 1;
             document.getElementById(String(i)).innerHTML = String(day_counter);
@@ -181,18 +182,22 @@ function daysInMonth(month, year) { // 1 - January
 document.getElementById("previous").addEventListener("click", previousMonth);
 // Update current month to the previous month for the previous month button
 function previousMonth() {
-    if (selected_date.getCalendarMonth() >= 1) {
-        selected_date.setCalendarMonth(selected_date.getCalendarDay - 1);
+    const FIRST_MONTH_IN_YEAR = 1;
+    var current_month = selected_date.getCalendarMonth() + 1;
+    if (current_month > FIRST_MONTH_IN_YEAR) {
+        selected_date.setCalendarMonth(selected_date.getCalendarMonth() - 1);
     } else { // If the month is January, change the current month to December
         selected_date.setCalendarMonth(11); // Index starts from 0 so 11 represents December
-        selected_date.seCalendartYear(selected_date.getCalendarYear() - 1); // Update to previous year
+        selected_date.setCalendarYear(selected_date.getCalendarYear() - 1); // Update to previous year
     }
     updateCalendar(); // Update calendar to reflect changes
 }
 
 document.getElementById("next").addEventListener("click", nextMonth);
 function nextMonth() {
-    if (selected_date.getCalendarMonth() <= 10) {
+    const LAST_MONTH_IN_YEAR = 12;
+    var current_month = selected_date.getCalendarMonth() + 1;
+    if (current_month < LAST_MONTH_IN_YEAR) {
         selected_date.setCalendarMonth(selected_date.getCalendarMonth() + 1);
     } else { // If the month is December, change the current month to January
         selected_date.setCalendarMonth(0); // Index starts at 0 so 0 represents January
@@ -225,13 +230,14 @@ class InputAmount {
 function getCardReviewsAmount() {
     // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
     var date = selected_date.getCalendarYear();
-    if ((selected_date.getCalendarMonth() + 1) <= 9) {
+    const LARGEST_SINGLE_DIGIT_NUMBER = 9;
+    if ((selected_date.getCalendarMonth() + 1) <= LARGEST_SINGLE_DIGIT_NUMBER) {
         date += "-0" + (selected_date.getCalendarMonth() + 1);
     } else {
         date += "-" + (selected_date.getCalendarMonth() + 1);
     }
 
-    if (selected_date.getCalendarDay() <= 9) {
+    if (selected_date.getCalendarDay() <= LARGEST_SINGLE_DIGIT_NUMBER) {
         date += "-0" + selected_date.getCalendarDay();
     } else {
         date += "-" + selected_date.getCalendarDay();
