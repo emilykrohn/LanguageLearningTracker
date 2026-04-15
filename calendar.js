@@ -125,9 +125,10 @@ function addDateEventListeners() {
             if (selected_date.getCalendarDay() > 0 && selected_date.getCalendarDay() <= daysInCurrentMonth) {
                 // Add the currentSquare class to the current day
                 document.getElementById(String(date.target.id)).classList.add("currentSquare");
+                
+                updateForm();
                 // Update the prevously selected day to the current
                 previous_selected = date.target.id;
-                updateForm();
             }
         });
     }
