@@ -150,6 +150,7 @@ function updateForm() {
     if (localStorage.getItem(selected_date.getCalendarDate()) !== null) {
         // Get the hours and minutes for each catagory
         dateHours = JSON.parse(localStorage.getItem(selected_date.getCalendarDate()));
+        console.log(dateHours);
         updateFormDisplayedTime(dateHours);
     } else {
         // If there is no data for this day, display 0 hours and minutes for all categories
@@ -160,21 +161,37 @@ function updateForm() {
 function updateFormDisplayedTime(dateHours) {
     if (dateHours.length != 0) {
         // Display all of the data stored in local storage for these categories
-        document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: ' + dateHours["listeningHours"] + " hour(s) and " + dateHours["listeningMinutes"] + " minute(s)</label><br>";
-        document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: ' + dateHours["readingHours"] + " hour(s) and " + dateHours["readingMinutes"] + " minute(s)</label><br>";
-        document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: ' + dateHours["writingHours"] + " hour(s) and " + dateHours["writingMinutes"] + " minute(s)</label><br>";
-        document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: ' + dateHours["speakingHours"] + " hour(s) and " + dateHours["speakingMinutes"] + " minute(s)</label><br>";
-        // If user is connected to anki, show anki stats
-        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + dateHours["cardReviews"] + " card(s)</label><br>";
+        displayFormLabel(dateHours, "Listening", "listening");
+        displayFormLabel(dateHours, "Reading", "reading");
+        displayFormLabel(dateHours, "Writing", "writing");
+        displayFormLabel(dateHours, "Speaking", "speaking");
+        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + dateHours["cardReviews"] + ' card(s)</label><br>';
         document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
+
     } else {
-        document.getElementById("listening").innerHTML = '<label for="Listening" id="listening">Listening: 0 hour(s) and 0 minute(s)</label><br>';
-        document.getElementById("reading").innerHTML = '<label for="Reading" id="reading">Reading: 0 hour(s) and 0 minute(s)</label><br>';
-        document.getElementById("writing").innerHTML = '<label for="Writing" id="writing">Writing: 0 hour(s) and 0 minute(s)</label><br>';
-        document.getElementById("speaking").innerHTML = '<label for="Speaking" id="speaking">Speaking: 0 hour(s) and 0 minute(s)</label><br>';
+        displayEmptyLabel("Listening", "listening");
+        displayEmptyLabel("Reading", "reading");
+        displayEmptyLabel("Writing", "writing");
+        displayEmptyLabel("Speaking", "speaking");
         document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: 0 card(s)</label><br>';
         document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minute(s)<\p>";
     }
+}
+
+function displayFormLabel(dateHours, label, id) {
+    var hours = dateHours[id + "Hours"];
+    var minutes = dateHours[id + "Minutes"];
+    if (hours == "") {
+        hours = "0";
+    }
+    if (minutes == "") {
+        minutes = "0";
+    }
+    document.getElementById(id).innerHTML = '<label for="' + label + '" id="' + id + '">' + label + ': ' + hours + " hour(s) and " + minutes + " minute(s)</label><br>";
+}
+
+function displayEmptyLabel(label, id) {
+    document.getElementById(id).innerHTML = '<label for="' + label + '" id="' + id + '">' + label + ': 0 hour(s) and 0 minute(s)</label><br>';
 }
 
 // Given a month and year, return the number of days in that month
