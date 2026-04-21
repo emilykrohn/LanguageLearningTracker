@@ -43,7 +43,6 @@ export async function main() {
         console.log("Error: " + err);
         isConnectedToAnki = false;
     }
-    console.log(cardReviewsByDay);
 }
 
 // Export the map for card reviews to be used in calendar.js

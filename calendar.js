@@ -96,9 +96,31 @@ async function updateCalendar() {
     document.getElementById("monthAndYear").innerHTML = String(months[selected_date.getCalendarMonth()]) + ' ' + String(selected_date.getCalendarYear());
     daysInCurrentMonth = daysInMonth(selected_date.getCalendarMonth() + 1, selected_date.getCalendarYear(), 0);
     firstWeekDay = new Date(selected_date.getCalendarYear(), selected_date.getCalendarMonth(), 1).getDay() + 1;
+    updateTotalTimeOnCalendar();
     
     displayDayNumbersOnCalendarSquares();
     addDateEventListeners();
+}
+
+function updateTotalTimeOnCalendar() {
+    var time = calculateTotalTimeForCurrentMonth();
+    document.getElementById("TotalMonthHours").innerHTML = '<p id="TotalMonthHours">Total Hours This Month: ' + time["hours"] + '</p>';
+    document.getElementById("TotalMonthMinutes").innerHTML = '<p id="TotalMonthMinutes">Total Minutes This Month: ' + time["minutes"] + '</p>';
+}
+
+function calculateTotalTimeForCurrentMonth() {
+    var time = {
+        "hours": 0,
+        "minutes": 0,
+    };
+    for (var i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i).includes(String(selected_date.year) + "-" + String(selected_date.month + 1))) {
+            var current_date = JSON.parse(localStorage.getItem(localStorage.key(i)));
+            time["hours"] += current_date["totalHours"];
+            time["minutes"] += current_date["totalMinutes"];
+        }
+    }
+    return time;
 }
 
 function updateSelectedSquare(buttonType) {
@@ -150,7 +172,6 @@ function updateForm() {
     if (localStorage.getItem(selected_date.getCalendarDate()) !== null) {
         // Get the hours and minutes for each catagory
         dateHours = JSON.parse(localStorage.getItem(selected_date.getCalendarDate()));
-        console.log(dateHours);
         updateFormDisplayedTime(dateHours);
     } else {
         // If there is no data for this day, display 0 hours and minutes for all categories
@@ -302,6 +323,7 @@ function saveForm() {
 
     // Store the year and dictionary of hours to local storage
     localStorage.setItem(selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + current_day_edited, JSON.stringify(hours));
+    updateTotalTimeOnCalendar();
     updateForm();
 }
 
@@ -316,5 +338,6 @@ document.getElementById("clearButton").addEventListener("click", clearForm);
 // Clears local storage data for currently selected day
 function clearForm() {
     localStorage.removeItem(selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + current_day_edited);
+    updateTotalTimeOnCalendar();
     updateForm();
 }
