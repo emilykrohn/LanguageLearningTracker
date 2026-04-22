@@ -323,6 +323,7 @@ function saveForm() {
 
     // Store the year and dictionary of hours to local storage
     localStorage.setItem(selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + current_day_edited, JSON.stringify(hours));
+    document.getElementById(String(selected_date.day + firstWeekDay - 1)).classList.add("savedSquare");
     updateTotalTimeOnCalendar();
     updateForm();
 }
@@ -338,6 +339,7 @@ document.getElementById("clearButton").addEventListener("click", clearForm);
 // Clears local storage data for currently selected day
 function clearForm() {
     localStorage.removeItem(selected_date.getCalendarYear() + "-" + (selected_date.getCalendarMonth() + 1) + "-" + current_day_edited);
+    document.getElementById(String(selected_date.day + firstWeekDay - 1)).classList.remove("savedSquare");
     updateTotalTimeOnCalendar();
     updateForm();
 }

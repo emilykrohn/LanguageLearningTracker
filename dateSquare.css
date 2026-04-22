@@ -42,6 +42,10 @@
     background-color: #6495ed;
 }
 
+.savedSquare {
+    background-color: rgb(143, 255, 152);
+}
+
 .currentDay {
     height: 80px;
     width: 80px;
