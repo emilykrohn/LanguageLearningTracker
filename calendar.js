@@ -97,9 +97,18 @@ async function updateCalendar() {
     daysInCurrentMonth = daysInMonth(selected_date.getCalendarMonth() + 1, selected_date.getCalendarYear(), 0);
     firstWeekDay = new Date(selected_date.getCalendarYear(), selected_date.getCalendarMonth(), 1).getDay() + 1;
     updateTotalTimeOnCalendar();
+    updateSavedSquares();
     
     displayDayNumbersOnCalendarSquares();
     addDateEventListeners();
+}
+
+function updateSavedSquares() {
+    for (var i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i).includes(String(selected_date.year) + "-" + String(selected_date.month + 1))) {
+            document.getElementById(Number(localStorage.key(i).substring(7)) + firstWeekDay - 1).classList.add("savedSquare");
+        }
+    }
 }
 
 function updateTotalTimeOnCalendar() {
