@@ -197,7 +197,7 @@ function updateFormDisplayedTime(dateHours) {
         displayFormLabel(dateHours, "Writing", "writing");
         displayFormLabel(dateHours, "Speaking", "speaking");
         displayCardLabel(dateHours["cardReviews"]);
-        document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
+        displayTotalTime(dateHours["totalHours"], dateHours["totalMinutes"]);
 
     } else {
         displayEmptyLabel("Listening", "listening");
@@ -205,12 +205,16 @@ function updateFormDisplayedTime(dateHours) {
         displayEmptyLabel("Writing", "writing");
         displayEmptyLabel("Speaking", "speaking");
         displayCardLabel("0");
-        document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minute(s)<\p>";
+        displayTotalTime("0", "0")
     }
 }
 
 function displayCardLabel(cards) {
     document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cards + ' card(s)</label><br>';
+}
+
+function displayTotalTime(hours, minutes) {
+    document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + hours + " Hour(s) and " + minutes + " Minute(s)<\p>";
 }
 
 function displayFormLabel(dateHours, label, id) {
