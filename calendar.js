@@ -103,6 +103,7 @@ async function updateCalendar() {
     addDateEventListeners();
 }
 
+// TODO: Make local storage key in the format like 2026-01-03 so the length is even for all dates
 function updateSavedSquares() {
     for (var i = 0; i < localStorage.length; i++) {
         if (localStorage.key(i).includes(String(selected_date.year) + "-" + String(selected_date.month + 1))) {
@@ -195,7 +196,7 @@ function updateFormDisplayedTime(dateHours) {
         displayFormLabel(dateHours, "Reading", "reading");
         displayFormLabel(dateHours, "Writing", "writing");
         displayFormLabel(dateHours, "Speaking", "speaking");
-        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + dateHours["cardReviews"] + ' card(s)</label><br>';
+        displayCardLabel(dateHours["cardReviews"]);
         document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: " + dateHours["totalHours"] + " Hour(s) and " + dateHours["totalMinutes"] + " Minute(s)<\p>";
 
     } else {
@@ -203,9 +204,13 @@ function updateFormDisplayedTime(dateHours) {
         displayEmptyLabel("Reading", "reading");
         displayEmptyLabel("Writing", "writing");
         displayEmptyLabel("Speaking", "speaking");
-        document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: 0 card(s)</label><br>';
+        displayCardLabel("0");
         document.getElementById("totalTimeRecorded").innerHTML = "<p>Total: 0 Hour(s) and 0 Minute(s)<\p>";
     }
+}
+
+function displayCardLabel(cards) {
+    document.getElementById("card").innerHTML = '<label for="Cards" id="card">Cards Reviewed Today: ' + cards + ' card(s)</label><br>';
 }
 
 function displayFormLabel(dateHours, label, id) {
