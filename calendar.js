@@ -198,14 +198,13 @@ function updateFormDisplayedTime(dateHours) {
         displayFormLabel(dateHours, "Speaking", "speaking");
         displayCardLabel(dateHours["cardReviews"]);
         displayTotalTime(dateHours["totalHours"], dateHours["totalMinutes"]);
-
     } else {
         displayEmptyLabel("Listening", "listening");
         displayEmptyLabel("Reading", "reading");
         displayEmptyLabel("Writing", "writing");
         displayEmptyLabel("Speaking", "speaking");
         displayCardLabel("0");
-        displayTotalTime("0", "0")
+        displayTotalTime("0", "0");
     }
 }
 
@@ -305,14 +304,18 @@ function getCardReviewsAmount() {
     return cardReviewsByDay[date];
 }
 
+function createInputAmount(hours, minutes) {
+    return new InputAmount(document.getElementById(hours), document.getElementById(minutes));
+}
+
 document.getElementById("saveButton").addEventListener("click", saveForm);
 // Function is run when the save button from the form is pressed
 function saveForm() {
     // Get the input from each of the document elements for each category hours and minutes
-    var listeningAmount = new InputAmount(document.getElementById("listeningHours"), document.getElementById("listeningMinutes"));
-    var readingAmount = new InputAmount(document.getElementById("readingHours"), document.getElementById("readingMinutes"));
-    var writingAmount = new InputAmount(document.getElementById("writingHours"), document.getElementById("writingMinutes"));
-    var speakingAmount = new InputAmount(document.getElementById("speakingHours"), document.getElementById("speakingMinutes"));
+    var listeningAmount = createInputAmount("listeningHours", "listeningMinutes");
+    var readingAmount = createInputAmount("readingHours", "readingMinutes");
+    var writingAmount = createInputAmount("writingHours", "writingMinutes");
+    var speakingAmount = createInputAmount("speakingHours", "speakingMinutes");
     
     var cardReviews = 0;
 
