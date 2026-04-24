@@ -285,7 +285,7 @@ class InputAmount {
     }
 }
 
-function getCardReviewsAmount() {
+function getCardReviewsAmountFromAnki() {
     // If month is a single digit, this adds a zero in front of the day to work with how the data has been stored
     var date = selected_date.getCalendarYear();
     const LARGEST_SINGLE_DIGIT_NUMBER = 9;
@@ -300,12 +300,22 @@ function getCardReviewsAmount() {
     } else {
         date += "-" + selected_date.getCalendarDay();
     }
-    
+    console.log(cardReviewsByDay[date]);
     return cardReviewsByDay[date];
 }
 
 function createInputAmount(hours, minutes) {
     return new InputAmount(document.getElementById(hours), document.getElementById(minutes));
+}
+
+function getCardReviewAmount() {
+    var cardAmount = 0;
+    if (isConnectedToAnki) {
+        cardAmount = getCardReviewsAmountFromAnki();
+    } else {
+        cardAmount = document.getElementById("cardsReviewed").value;
+    }
+    return cardAmount;
 }
 
 document.getElementById("saveButton").addEventListener("click", saveForm);
@@ -317,13 +327,8 @@ function saveForm() {
     var writingAmount = createInputAmount("writingHours", "writingMinutes");
     var speakingAmount = createInputAmount("speakingHours", "speakingMinutes");
     
-    var cardReviews = 0;
-
-    if (isConnectedToAnki) {
-        cardReviews = getCardReviewsAmount();
-    } else {
-        cardReviews = document.getElementById("cardsReviewed").value;
-    }
+    var cardReviews = getCardReviewAmount();
+    console.log(getCardReviewAmount());
 
     // Add all hour and minute amounts
     var totalHours = Number(listeningAmount.hours.value) + Number(readingAmount.hours.value) + Number(writingAmount.hours.value) + Number(speakingAmount.hours.value);
