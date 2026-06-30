@@ -105,6 +105,11 @@ async function updateCalendar() {
 
 // TODO: Make local storage key in the format like 2026-01-03 so the length is even for all dates
 function updateSavedSquares() {
+    const TOTAL_SQUARES_IN_CALENDAR = 37;
+
+    for (var i = 1; i <= TOTAL_SQUARES_IN_CALENDAR; i++) {
+        document.getElementById(String(i)).classList.remove("savedSquare");
+    }
     for (var i = 0; i < localStorage.length; i++) {
         if (localStorage.key(i).includes(String(selected_date.year) + "-" + String(selected_date.month + 1))) {
             document.getElementById(Number(localStorage.key(i).substring(7)) + firstWeekDay - 1).classList.add("savedSquare");
